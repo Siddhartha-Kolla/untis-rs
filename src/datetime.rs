@@ -130,11 +130,11 @@ fn chrono_to_untis_time(time: NaiveTime) -> u16 {
 }
 
 fn chrono_from_untis_time(value: u16) -> NaiveTime {
-    let string = value.to_string();
-    let hour_len = if string.len() == 3 { 1 } else { 2 };
-    let hours = string[0..hour_len].parse::<u32>().unwrap();
-    let mins = string[hour_len..(hour_len + 2)].parse::<u32>().unwrap();
-    NaiveTime::from_hms_opt(hours, mins, 0).unwrap()
+    let hours = (value / 100) as u32;
+    let mins = (value % 100) as u32;
+
+    NaiveTime::from_hms_opt(hours, mins, 0)
+        .expect("Invalid Untis time")
 }
 
 #[cfg(test)]
